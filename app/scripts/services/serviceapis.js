@@ -22,7 +22,7 @@ angular.module('presalesApp')
             headers: {'Authorization': 'crittersupport.opensilo.co'}
           }
         });
-      },
+      }
     }
 
 

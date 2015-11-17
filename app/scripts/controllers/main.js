@@ -8,30 +8,37 @@
  * Controller of the presalesApp
  */
 angular.module('presalesApp')
-  .controller('MainCtrl', function ($scope, serviceApis) {
+  .controller('MainCtrl', function ($scope, client, serviceApis) {
     this.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
       'Karma'
     ];
 
+    $scope.inputKeyPress = function(keyCode){
+        if(keyCode === 13){
+            searchQuery();
+        }
+    };
 
-    var params = {};
-    params.question = "what"; //search_query;
-    params.unique_id = "ddd";//$rootScope.globalVar.company_unique_id;
+    $scope.search = function(){
+        searchQuery();
+    };
 
-    var serviceObj = serviceApis.search_query();
-    serviceObj.search(params, function(successresponse){
-      var searchResults = successresponse.related_questions.hits;
-      alert("Success");
-    }, function(errorresponse){
-
-      alert("eerr");
-
-      console.log("Error in searchResults get: ");
-      console.log(errorresponse);
-    });
-
-
-
+    function searchQuery(){
+        client.search({index: 'presales', type: 'data', body: {
+            query: {
+                match: {
+                    bhavikas_comments: $scope.searchString
+                }
+            }
+        }}).then(function(resp) {
+            var response = resp.hits.hits;
+            var responseArray = [];
+            angular.forEach(response, function(value, key) {
+                responseArray.push(value._source);
+            });
+            $scope.searchResults = responseArray;
+        });
+    }
   });
