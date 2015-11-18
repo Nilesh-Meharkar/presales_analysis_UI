@@ -24,7 +24,7 @@
 
           <li class="list-group-item row" ng-repeat="result in searchResults | orderBy: 'gpa':true " >
             <div class="col-md-1">
-              <a target="_blank" href={{result._source.notes}} class="btn btn-info btn-lg">
+              <a target="_blank" href={{result.notes}} class="btn btn-info btn-lg">
                 <span class="glyphicon glyphicon-file"></span>
               </a>
             </div>
