@@ -28,9 +28,13 @@ angular.module('presalesApp')
     function searchQuery(){
         client.search({index: 'presales', type: 'data', body: {
             query: {
-                match: {
-                    bhavikas_comments: $scope.searchString
+                filtered: {
+                query: {
+                multi_match: {
+                    query: $scope.searchString,
+                    fields: ['bhavikas_comments', 'careers_page_data']
                 }
+                }}
             }
         }}).then(function(resp) {
             var response = resp.hits.hits;
